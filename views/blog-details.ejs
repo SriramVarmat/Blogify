@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./partials/head.ejs') %>
+<body>
+    
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="details content">
+        <h2><%= blog.title %></h2>
+        <div class="content">
+          <p><%= blog.body %></p>
+        </div>
+       <button class="delete" data-id="<%=blog._id%>"><i class="fa-solid fa-trash"></i></button>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+
+    <script>
+        let btn = document.querySelector(".delete");
+        
+        btn.addEventListener('click', async (e)=>{
+           const id = btn.dataset.id;
+           const uri = `/blog/${id}`;
+           let response = await fetch(uri, {
+                method: 'DELETE'
+           });
+           let data = await response.json();
+           if (data.redirect) {
+                    // Perform the redirect
+                    window.location.href = data.redirect;
+           }
+        })
+    </script>
+</body>
+</html>
